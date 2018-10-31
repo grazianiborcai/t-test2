@@ -1,0 +1,67 @@
+{
+	"name": "Function App AAD",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get token",
+				"type": "WebActivity",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"url": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/token",
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					"body": {
+						"value": "grant_type=client_credentials&client_id=@{pipeline().parameters.client_ID.value}&client_secret=@{pipeline().parameters.client_secret.value}&resource=@{pipeline().parameters.client_ID.value}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Connect Function App",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Get token",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"url": "https://fucappgr.azurewebsites.net/api/HttpTriggerCSharp1?code=ZDDs/YkuxibmaSdCRUIL4MufUBruBcEEgrKKAOu2rXCXbyCB5TPR8w==",
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "Bearer @{activity('Get token').output.access_token}",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"client_ID": {
+				"type": "SecureString"
+			},
+			"client_secret": {
+				"type": "SecureString"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
