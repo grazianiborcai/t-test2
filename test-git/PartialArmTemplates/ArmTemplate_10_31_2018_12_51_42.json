@@ -21,7 +21,6 @@
 					{
 						"name": "Get token",
 						"type": "WebActivity",
-						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -29,7 +28,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"url": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/token",
 							"method": "POST",
@@ -60,7 +58,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"url": "https://fucappgr.azurewebsites.net/api/HttpTriggerCSharp1?code=ZDDs/YkuxibmaSdCRUIL4MufUBruBcEEgrKKAOu2rXCXbyCB5TPR8w==",
 							"method": "GET",
@@ -80,10 +77,8 @@
 					"client_secret": {
 						"type": "SecureString"
 					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
+				}
+			}
 		}
 	]
 }
